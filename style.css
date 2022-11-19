@@ -1,0 +1,18 @@
+.flag-image {
+    width: 230px;
+
+}
+
+.my-cards {
+    height: 100px;
+    margin: 15px;
+}
+
+.my-cards img {
+    height: 80px;
+
+}
+
+.border-item {
+    border-bottom: 1px solid black;
+}
