@@ -2,7 +2,6 @@ const textId = document.querySelector('#textId');
 const btnId = document.querySelector('#btnText');
 const headerCard = document.querySelector(" #headerCard"); const nextCard = document.querySelector("#nextCard");
 btnId.addEventListener('click', () => {
-    console.log();
     counDisplay(textId.value);
 })
 
@@ -12,18 +11,24 @@ btnId.addEventListener('click', () => {
 function counDisplay(cauntry) {
 
     fetch('https://restcountries.com/v3.1/name/' + cauntry)
-        .then((response) => { return response.json() })
+        .then((response) => { 
+            if(!response.ok)
+            throw new Error("country not find")
+            console.log(response);
+            return response.json() })
         .then((data) => {
             reqDisplay(data[0]);
             const cauntrs = data[0].borders.toString();
             return fetch('https://restcountries.com/v3.1/alpha?codes=' + cauntrs);
         }).then((response) => { return response.json(); })
-        .then((data) => { borderDisplay(data) });
+        .then((data) => { borderDisplay(data) })
+        .catch((err)=>{console.log(err)})
+
 };
 
 
 function reqDisplay(data) {
-
+headerCard.innerHTML= '';
     let html = `
             <div class="card my-3">
                 <div class="row g-0">
@@ -46,16 +51,14 @@ function reqDisplay(data) {
             `;
 
     headerCard.insertAdjacentHTML("beforeend", html);
-
 }
-
 function borderDisplay(data) {
+
+nextCard.innerHTML='';
+
     for (let i in data) {
-        console.log(i)
-
         let html = `
-
-            <div class="col-3 my-cards">
+            <div class="col-3 my-cards my-4">
                 <img src="${data[i].flags.png}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${data[i].name.common}</h5>
@@ -63,4 +66,11 @@ function borderDisplay(data) {
                 `;
         nextCard.insertAdjacentHTML("beforeend", html);
     }
+}
+
+
+
+function renderError()
+{
+
 }
