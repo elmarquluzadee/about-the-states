@@ -68,61 +68,33 @@
 
         function counDisplay(cauntry) {
 
-            fetch('https://restcountries.com/v3.1/name/america')
-                .then((response) => {
-                    return response.json()
-                })
+            fetch('https://restcountries.com/v3.1/name/' + cauntry)
+                .then((response) => { return response.json() })
                 .then((data) => {
-                    console.log(data)
                     reqDisplay(data[0]);
-                })
-            // const request = new XMLHttpRequest();
-
-            // request.open('GET', 'https://restcountries.com/v3.1/name/' + cauntry);
-
-            // request.send();
-
-            // request.addEventListener('load', function () {
-
-            //     const date = JSON.parse(this.responseText);
-            //     const cauntrs = String(date[0].borders);
-            //     // console.log(String(date[0].borders));
-
-            //     reqDisplay(date[0]);
-
-            //     const req = new XMLHttpRequest();
-
-            //     req.open('GET', 'https://restcountries.com/v3.1/alpha?codes=' + cauntrs);
-
-            //     req.send();
-
-            //     req.addEventListener('load', function () {
-
-            //         const date = JSON.parse(this.responseText);
-            //         console.log(date);
-            //         borderDisplay(date);
-
-            //     })
-            // });
+                    const cauntrs = data[0].borders.toString();
+                    return fetch('https://restcountries.com/v3.1/alpha?codes=' + cauntrs);
+                }).then((response) => { return response.json(); })
+                .then((data) => { borderDisplay(data) });
         };
 
 
-        function reqDisplay(date) {
+        function reqDisplay(data) {
 
             let html = `
                     <div class="card my-3">
                         <div class="row g-0">
                             <div class="col-md-6 d-flex justify-content-center align-items-center">
-                                <img src="${date.flags.png}" class="flag-image my-3" alt="...">
+                                <img src="${data.flags.png}" class="flag-image my-3" alt="...">
                             </div>
                             <div class="col-md-6">
                                 <div class="card-body mx-5">
-                                    <h5 class="card-title">State&nbsp;: ${date.altSpellings[2]}</h5>
-                                    <p class="card-text">Capital&nbsp;: ${date.capital}</p>
-                                    <p class="card-text">Population&nbsp;: ${(date.population / 1000000).toFixed()} M
+                                    <h5 class="card-title">State&nbsp;: ${data.altSpellings[2]}</h5>
+                                    <p class="card-text">Capital&nbsp;: ${data.capital}</p>
+                                    <p class="card-text">Population&nbsp;: ${(data.population / 1000000).toFixed()} M
                                     </p>
                                     <p class="card-text">Currency&nbsp;:
-                                        ${Object.values(date.currencies)[0].name}(${Object.values(date.currencies)[0].symbol})
+                                        ${Object.values(data.currencies)[0].name}(${Object.values(data.currencies)[0].symbol})
                                     </p>
                                 </div>
                             </div>
@@ -134,16 +106,16 @@
 
         }
 
-        function borderDisplay(date) {
-            for (let i in date) {
+        function borderDisplay(data) {
+            for (let i in data) {
                 console.log(i)
 
                 let html = `
 
                     <div class="col-3 my-cards">
-                        <img src="${date[i].flags.png}" class="card-img-top" alt="...">
+                        <img src="${data[i].flags.png}" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">${date[i].name.common}</h5>
+                            <h5 class="card-title">${data[i].name.common}</h5>
                         </div>
                         `;
                 nextCard.insertAdjacentHTML("beforeend", html);
