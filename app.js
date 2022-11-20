@@ -1,34 +1,45 @@
 const textId = document.querySelector('#textId');
 const btnId = document.querySelector('#btnText');
-const headerCard = document.querySelector(" #headerCard"); const nextCard = document.querySelector("#nextCard");
+const headerCard = document.querySelector(" #headerCard");
+const nextCard = document.querySelector("#nextCard");
+
 btnId.addEventListener('click', () => {
     counDisplay(textId.value);
 })
 
+async function counDisplay(country) {
+    const countryUrl = "https://restcountries.com/v3.1";
+    let borderCountries;
 
-
-
-function counDisplay(cauntry) {
-
-    fetch('https://restcountries.com/v3.1/name/' + cauntry)
-        .then((response) => { 
-            if(!response.ok)
-            throw new Error("country not find")
-            console.log(response);
-            return response.json() })
-        .then((data) => {
+    await fetch(`${countryUrl}/name/${country}`)
+        .then(response => {
+            if (!response.ok)
+                throw new Error("country not find")
+            return response.json();
+        })
+        .then(data => {
             reqDisplay(data[0]);
-            const cauntrs = data[0].borders.toString();
-            return fetch('https://restcountries.com/v3.1/alpha?codes=' + cauntrs);
-        }).then((response) => { return response.json(); })
-        .then((data) => { borderDisplay(data) })
-        .catch((err)=>{console.log(err)})
+            borderCountries = data[0].borders.toString();
+        })
+        .catch(error => {
+            console.log(error);
+        })
 
+    await fetch(`${countryUrl}/alpha?codes=${borderCountries}`)
+        .then(response => response.json())
+        .then(data => {
+            borderDisplay(data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
 };
 
 
+
 function reqDisplay(data) {
-headerCard.innerHTML= '';
+    headerCard.innerHTML = '';
+
     let html = `
             <div class="card my-3">
                 <div class="row g-0">
@@ -52,25 +63,22 @@ headerCard.innerHTML= '';
 
     headerCard.insertAdjacentHTML("beforeend", html);
 }
-function borderDisplay(data) {
 
-nextCard.innerHTML='';
+function borderDisplay(borderCountries) {
+    nextCard.innerHTML = '';
 
-    for (let i in data) {
+    borderCountries.forEach(country => {
         let html = `
-            <div class="col-3 my-cards my-4">
-                <img src="${data[i].flags.png}" class="card-img-top" alt="...">
+            <div class="col-3 my-cards my-4 ">
+                <img src="${country.flags.png}" class="card-img-top d-flex justify-content-center" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">${data[i].name.common}</h5>
+                    <h5 class="card-title">${country.name.common}</h5>
                 </div>
                 `;
         nextCard.insertAdjacentHTML("beforeend", html);
-    }
+    });
 }
 
-
-
-function renderError()
-{
+function renderError() {
 
 }
