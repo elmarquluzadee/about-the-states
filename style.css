@@ -16,3 +16,7 @@
 .border-item {
     border-bottom: 1px solid black;
 }
+
+#loading {
+    display: none;
+}

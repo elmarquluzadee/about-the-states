@@ -17,14 +17,22 @@
     <div class="container">
         <div class="input-group mt-3 ">
             <input id="textId" type="text" class="form-control">
-            <button class="input-group-text btn btn-primary" id="btnText">Search</button>
+            <button id="btnText" class="input-group-text btn btn-primary" type="button">Search</button>
+            <button id="btnLocation" class="btn btn-success" type="button"><i
+                    class="fa-solid fa-location-crosshairs"></i></button>
         </div>
+
         <!-- card -->
         <div id="headerCard">
         </div>
         <div id="nextCard" class="my-3  row justify-content-center border-item">
             <div class="d-flex justify-content-center border-item">
                 <h3>borders</h3>
+            </div>
+        </div>
+        <div id="loading" class="text-center my-3">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
     </div>

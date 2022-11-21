@@ -3,8 +3,39 @@ const btnId = document.querySelector('#btnText');
 const headerCard = document.querySelector(" #headerCard");
 const nextCard = document.querySelector("#nextCard");
 
+document.querySelector("#btnLocation").addEventListener("click", () => {
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    }
+
+});
+
+function onError(err) {
+    console.log(err);
+};
+
+async function onSuccess(position) {
+    let lat = position.coords.latitude;
+    let lng = position.coords.longitude;
+    //api, google,opencageddata
+    const api_key = "e12c47b9cc3346ca8fa876beece3a7d8";
+
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${api_key}`
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const country = data.results[0].components.country
+
+    textId.value = country
+    btnId.click();
+};
+
 btnId.addEventListener('click', () => {
+    document.querySelector("#loading").style.display = "block";
     counDisplay(textId.value);
+
 })
 
 async function counDisplay(country) {
@@ -32,12 +63,15 @@ async function counDisplay(country) {
         })
         .catch(error => {
             console.log(error);
+            document.querySelector("#loading").style.display = "none";
         })
 };
 
 
 
 function reqDisplay(data) {
+
+    document.querySelector("#loading").style.display = "none";
     headerCard.innerHTML = '';
 
     let html = `
@@ -70,7 +104,7 @@ function borderDisplay(borderCountries) {
     borderCountries.forEach(country => {
         let html = `
             <div class="col-3 my-cards my-4 ">
-                <img src="${country.flags.png}" class="card-img-top d-flex justify-content-center" alt="...">
+                <img src="${country.flags.png}" class="card-img-top d-flex ju" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${country.name.common}</h5>
                 </div>
