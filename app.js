@@ -103,8 +103,8 @@ function borderDisplay(borderCountries) {
 
     borderCountries.forEach(country => {
         let html = `
-            <div class="col-3 my-cards my-4 ">
-                <img src="${country.flags.png}" class="card-img-top d-flex ju" alt="...">
+            <div class="col-md-3 my-cards my-4 ">
+                <img src="${country.flags.png}" class=" w-50" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${country.name.common}</h5>
                 </div>
